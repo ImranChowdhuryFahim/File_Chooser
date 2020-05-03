@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
         switch (requestCode) {
             case 10:
                 if (resultCode == RESULT_OK) {
-
+                    progressDialog.show();
 
                     Uri uri = data.getData();
 
@@ -117,30 +117,27 @@ public class MainActivity extends AppCompatActivity {
                         public void run() {
 
                     OkHttpClient client = new OkHttpClient();
-                    if(content_type!=null) {
-                        progressDialog.show();
-                        RequestBody file_body = RequestBody.create(MediaType.get(content_type), file);
-
-                        RequestBody requestBody = new MultipartBody.Builder()
-                                .setType(MultipartBody.FORM)
-                                .addFormDataPart("type", content_type)
-                                .addFormDataPart("uploaded_file", fpath.substring(
-                                        fpath.lastIndexOf("/") + 1), file_body)
-                                .build();
-                        Request request = new Request.Builder()
-                                .url("https://raykibul.com/upload/upload.php")
-                                .post(requestBody)
-                                .build();
-                        try {
-                            Response response = client.newCall(request).execute();
-                            if (!response.isSuccessful() && response != null) {
-                                throw new IOException("Error : " + response);
-                            }
-                            progressDialog.dismiss();
-                            //Toast.makeText(MainActivity.this,"Done Uploading",Toast.LENGTH_SHORT);
-                        } catch (IOException e) {
-                            e.printStackTrace();
+                    RequestBody file_body =RequestBody.create(MediaType.get(content_type),file);
+                    RequestBody requestBody =new MultipartBody.Builder()
+                            .setType(MultipartBody.FORM)
+                            .addFormDataPart("type",content_type)
+                            .addFormDataPart("uploaded_file",fpath.substring(
+                                    fpath.lastIndexOf("/")+1),file_body)
+                            .build();
+                    Request request=new Request.Builder()
+                            .url("https://raykibul.com/upload/upload.php")
+                            .post(requestBody)
+                            .build();
+                    try {
+                        Response response = client.newCall(request).execute();
+                        if(!response.isSuccessful() && response!=null)
+                        {
+                            throw new IOException("Error : "+ response);
                         }
+                        progressDialog.dismiss();
+                        //Toast.makeText(MainActivity.this,"Done Uploading",Toast.LENGTH_SHORT);
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
                         }
                     });
