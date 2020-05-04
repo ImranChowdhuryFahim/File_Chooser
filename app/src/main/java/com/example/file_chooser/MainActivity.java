@@ -105,10 +105,10 @@ public class MainActivity extends AppCompatActivity {
 
                     Uri uri = data.getData();
 
-                    String path = FileChooser.getPath(getApplicationContext(),uri);
+                    String path =FileUtils.getPath(getApplicationContext(),uri);
                     final File file=new File(path);
                     final String fpath=file.getAbsolutePath();
-                    final String content_type= getMimeType(file.getPath());
+                    final String content_type= FileChooser.getMimeType(file);
                     //img.setImageURI(Uri.fromFile(file));
                     text.setText(file.getAbsolutePath());
 
