@@ -32,6 +32,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URI;
 
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLSession;
+
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
@@ -116,7 +119,13 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void run() {
 
-                    OkHttpClient client = new OkHttpClient();
+                    OkHttpClient client =  new OkHttpClient.Builder()
+                            .hostnameVerifier(new HostnameVerifier() {
+                                @Override
+                                public boolean verify(String hostname, SSLSession session) {
+                                    return true;
+                                }
+                            }).build();
                     RequestBody file_body =RequestBody.create(MediaType.get(content_type),file);
                     RequestBody requestBody =new MultipartBody.Builder()
                             .setType(MultipartBody.FORM)
@@ -125,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
                                     fpath.lastIndexOf("/")+1),file_body)
                             .build();
                     Request request=new Request.Builder()
-                            .url("https://raykibul.com/upload/upload.php")
+                            .url("https://ratulbhowmick.com/upload/upload.php")
                             .post(requestBody)
                             .build();
                     try {
